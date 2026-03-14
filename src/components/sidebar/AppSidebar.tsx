@@ -141,8 +141,8 @@ const AppSidebar = ({ currentView, onNavigate }: AppSidebarProps) => {
         )}
       </AnimatePresence>
 
-      {/* Push content when pinned */}
-      {pinned && <div className="w-80 flex-shrink-0" />}
+      {/* Push content when sidebar is open (pinned or hovered) */}
+      {isOpen && <div className="w-80 flex-shrink-0 transition-all" />}
     </>
   );
 };
