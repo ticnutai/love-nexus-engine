@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import Hero from "@/components/landing/Hero";
 import ValueProps from "@/components/landing/ValueProps";
 import HowItWorks from "@/components/landing/HowItWorks";
@@ -8,23 +10,31 @@ import Dashboard from "@/components/dashboard/Dashboard";
 type AppView = "landing" | "onboarding" | "dashboard";
 
 const Index = () => {
-  const [view, setView] = useState<AppView>("landing");
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [view, setView] = useState<AppView>(user ? "dashboard" : "landing");
 
-  if (view === "onboarding") {
-    return <OnboardingWizard onComplete={() => setView("dashboard")} />;
+  const handleGetStarted = () => {
+    if (user) {
+      setView("onboarding");
+    } else {
+      navigate("/auth");
+    }
+  };
+
+  if (user && view === "dashboard") {
+    return <Dashboard onLogout={async () => { await signOut(); setView("landing"); }} />;
   }
 
-  if (view === "dashboard") {
-    return <Dashboard onLogout={() => setView("landing")} />;
+  if (user && view === "onboarding") {
+    return <OnboardingWizard onComplete={() => setView("dashboard")} />;
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Hero onGetStarted={() => setView("onboarding")} />
+      <Hero onGetStarted={handleGetStarted} />
       <ValueProps />
       <HowItWorks />
-
-      {/* Footer */}
       <footer className="py-12 bg-secondary text-secondary-foreground" dir="rtl">
         <div className="container text-center">
           <p className="text-sm opacity-80">© 2026 הבית — כל הזכויות שמורות</p>
