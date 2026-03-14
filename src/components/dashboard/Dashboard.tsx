@@ -63,9 +63,11 @@ const mockMatches = [
 
 interface DashboardProps {
   onLogout: () => void;
+  onAdminPanel?: () => void;
 }
 
-const Dashboard = ({ onLogout }: DashboardProps) => {
+const Dashboard = ({ onLogout, onAdminPanel }: DashboardProps) => {
+  const { isAdmin } = useAuth();
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       {/* Header */}
