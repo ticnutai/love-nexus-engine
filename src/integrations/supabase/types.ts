@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      people: {
+        Row: {
+          age: number | null
+          city: string | null
+          created_at: string
+          created_by: string
+          education: string | null
+          email: string | null
+          first_name: string
+          gender: string | null
+          hobbies: string | null
+          id: string
+          last_name: string
+          notes: string | null
+          occupation: string | null
+          phone: string | null
+          preferences: string | null
+          religiosity: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          created_by: string
+          education?: string | null
+          email?: string | null
+          first_name: string
+          gender?: string | null
+          hobbies?: string | null
+          id?: string
+          last_name: string
+          notes?: string | null
+          occupation?: string | null
+          phone?: string | null
+          preferences?: string | null
+          religiosity?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          created_by?: string
+          education?: string | null
+          email?: string | null
+          first_name?: string
+          gender?: string | null
+          hobbies?: string | null
+          id?: string
+          last_name?: string
+          notes?: string | null
+          occupation?: string | null
+          phone?: string | null
+          preferences?: string | null
+          religiosity?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
