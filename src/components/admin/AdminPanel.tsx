@@ -32,37 +32,8 @@ const AdminPanel = ({ onBack }: { onBack: () => void }) => {
 
       if (error) throw error;
 
-      // Get roles via exec_sql (admin only)
-      const { data: rolesResult } = await supabase.rpc("exec_sql", {
-        query: `SELECT json_agg(json_build_object('user_id', user_id::text, 'role', role::text)) as result FROM public.user_roles`,
-      });
-
+      // Get roles via get_all_roles (security definer function)
       let rolesMap: Record<string, string> = {};
-
-      // exec_sql returns {success, rows_affected, ...} but doesn't return SELECT data
-      // We need a different approach - create a function that returns data
-      // For now, use a workaround: query via exec_sql with a temp table or use direct RPC
-
-      // Actually, let's try getting roles from the user_roles table directly
-      // The RLS only allows users to see their own roles, but admin uses exec_sql
-      // exec_sql executes but doesn't return result sets
-      // Let's create a proper admin function
-
-      const { data: adminRolesResult } = await supabase.rpc("exec_sql", {
-        query: `
-          CREATE OR REPLACE FUNCTION public.get_all_roles()
-          RETURNS json
-          LANGUAGE sql
-          SECURITY DEFINER
-          SET search_path = public
-          AS $fn$
-            SELECT COALESCE(json_agg(json_build_object('user_id', user_id::text, 'role', role::text)), '[]'::json)
-            FROM public.user_roles
-          $fn$;
-        `,
-      });
-
-      // Now call the function
       const { data: rolesData } = await supabase.rpc("get_all_roles" as any);
 
       if (Array.isArray(rolesData)) {
