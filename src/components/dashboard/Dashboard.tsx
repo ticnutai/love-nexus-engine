@@ -3,6 +3,7 @@ import { Heart, Bell, User, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import MatchCard from "./MatchCard";
+import AppSidebar from "@/components/sidebar/AppSidebar";
 
 const mockMatches = [
   {
@@ -68,59 +69,70 @@ interface DashboardProps {
 
 const Dashboard = ({ onLogout, onAdminPanel }: DashboardProps) => {
   const { isAdmin } = useAuth();
+
+  const handleNavigate = (view: string) => {
+    if (view === "admin" && onAdminPanel) onAdminPanel();
+  };
+
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <Heart className="w-6 h-6 text-primary" />
-            <span className="text-xl font-bold font-display text-foreground">הבית</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {isAdmin && onAdminPanel && (
-              <Button variant="ghost" size="icon" onClick={onAdminPanel} title="פאנל ניהול">
-                <ShieldCheck className="w-5 h-5" />
+    <div className="min-h-screen bg-background flex" dir="rtl">
+      {/* Sidebar */}
+      <AppSidebar currentView="dashboard" onNavigate={handleNavigate} />
+
+      {/* Main area */}
+      <div className="flex-1 min-w-0">
+        {/* Header */}
+        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border">
+          <div className="container flex items-center justify-between h-16">
+            <div className="flex items-center gap-2">
+              <Heart className="w-6 h-6 text-primary" />
+              <span className="text-xl font-bold font-display text-foreground">הבית</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isAdmin && onAdminPanel && (
+                <Button variant="ghost" size="icon" onClick={onAdminPanel} title="פאנל ניהול">
+                  <ShieldCheck className="w-5 h-5" />
+                </Button>
+              )}
+              <Button variant="ghost" size="icon">
+                <Bell className="w-5 h-5" />
               </Button>
-            )}
-            <Button variant="ghost" size="icon">
-              <Bell className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <User className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={onLogout}>
-              <LogOut className="w-5 h-5" />
-            </Button>
+              <Button variant="ghost" size="icon">
+                <User className="w-5 h-5" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={onLogout}>
+                <LogOut className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main content */}
-      <main className="container py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <h1 className="text-3xl font-bold text-foreground mb-2">ההתאמות שלכם</h1>
-          <p className="text-muted-foreground">
-            מצאנו {mockMatches.length} התאמות איכותיות עבורכם. קחו את הזמן 💝
-          </p>
-        </motion.div>
+        {/* Main content */}
+        <main className="container py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <h1 className="text-3xl font-bold text-foreground mb-2">ההתאמות שלכם</h1>
+            <p className="text-muted-foreground">
+              מצאנו {mockMatches.length} התאמות איכותיות עבורכם. קחו את הזמן 💝
+            </p>
+          </motion.div>
 
-        {/* Match grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockMatches.map((match, i) => (
-            <MatchCard
-              key={i}
-              {...match}
-              index={i}
-              onViewProfile={() => {}}
-            />
-          ))}
-        </div>
-      </main>
+          {/* Match grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockMatches.map((match, i) => (
+              <MatchCard
+                key={i}
+                {...match}
+                index={i}
+                onViewProfile={() => {}}
+              />
+            ))}
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
