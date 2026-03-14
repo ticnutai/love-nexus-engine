@@ -78,6 +78,11 @@ const Dashboard = ({ onLogout, onAdminPanel }: DashboardProps) => {
             <span className="text-xl font-bold font-display text-foreground">הבית</span>
           </div>
           <div className="flex items-center gap-2">
+            {isAdmin && onAdminPanel && (
+              <Button variant="ghost" size="icon" onClick={onAdminPanel} title="פאנל ניהול">
+                <ShieldCheck className="w-5 h-5" />
+              </Button>
+            )}
             <Button variant="ghost" size="icon">
               <Bell className="w-5 h-5" />
             </Button>
