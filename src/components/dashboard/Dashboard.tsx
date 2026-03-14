@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Heart, Bell, User, LogOut } from "lucide-react";
+import { Heart, Bell, User, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import MatchCard from "./MatchCard";
 
 const mockMatches = [
@@ -62,9 +63,11 @@ const mockMatches = [
 
 interface DashboardProps {
   onLogout: () => void;
+  onAdminPanel?: () => void;
 }
 
-const Dashboard = ({ onLogout }: DashboardProps) => {
+const Dashboard = ({ onLogout, onAdminPanel }: DashboardProps) => {
+  const { isAdmin } = useAuth();
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       {/* Header */}
@@ -75,6 +78,11 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
             <span className="text-xl font-bold font-display text-foreground">הבית</span>
           </div>
           <div className="flex items-center gap-2">
+            {isAdmin && onAdminPanel && (
+              <Button variant="ghost" size="icon" onClick={onAdminPanel} title="פאנל ניהול">
+                <ShieldCheck className="w-5 h-5" />
+              </Button>
+            )}
             <Button variant="ghost" size="icon">
               <Bell className="w-5 h-5" />
             </Button>

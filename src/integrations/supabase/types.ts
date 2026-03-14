@@ -89,6 +89,7 @@ export type Database = {
     }
     Functions: {
       exec_sql: { Args: { query: string }; Returns: Json }
+      get_all_roles: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

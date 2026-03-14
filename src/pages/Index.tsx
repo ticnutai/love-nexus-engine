@@ -6,8 +6,9 @@ import ValueProps from "@/components/landing/ValueProps";
 import HowItWorks from "@/components/landing/HowItWorks";
 import OnboardingWizard from "@/components/onboarding/OnboardingWizard";
 import Dashboard from "@/components/dashboard/Dashboard";
+import AdminPanel from "@/components/admin/AdminPanel";
 
-type AppView = "landing" | "onboarding" | "dashboard";
+type AppView = "landing" | "onboarding" | "dashboard" | "admin";
 
 const Index = () => {
   const { user, signOut } = useAuth();
@@ -22,8 +23,17 @@ const Index = () => {
     }
   };
 
+  if (user && view === "admin") {
+    return <AdminPanel onBack={() => setView("dashboard")} />;
+  }
+
   if (user && view === "dashboard") {
-    return <Dashboard onLogout={async () => { await signOut(); setView("landing"); }} />;
+    return (
+      <Dashboard
+        onLogout={async () => { await signOut(); setView("landing"); }}
+        onAdminPanel={() => setView("admin")}
+      />
+    );
   }
 
   if (user && view === "onboarding") {
