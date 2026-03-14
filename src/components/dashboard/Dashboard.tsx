@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Heart, Bell, User, LogOut } from "lucide-react";
+import { Heart, Bell, User, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import MatchCard from "./MatchCard";
 
 const mockMatches = [
