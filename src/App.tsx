@@ -9,6 +9,8 @@ import SettingsPanel from "@/components/settings/SettingsPanel";
 import Index from "./pages/Index.tsx";
 import AuthPage from "./pages/AuthPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import SearchPage from "./pages/SearchPage.tsx";
+import PersonPage from "./pages/PersonPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/auth" element={user ? <Index /> : <AuthPage />} />
         <Route path="/" element={<Index />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/person/:tz" element={<PersonPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {user && <SettingsPanel />}

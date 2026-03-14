@@ -1,8 +1,16 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "./AuthContext";
 
-type ThemeName = "luxury" | "default" | "warm";
+export const THEMES = [
+  { id: "luxury", label: "יוקרתי", emoji: "✨" },
+  { id: "default", label: "קלאסי", emoji: "🏠" },
+  { id: "warm", label: "חמים", emoji: "🌅" },
+  { id: "ocean", label: "אוקיינוס", emoji: "🌊" },
+  { id: "forest", label: "יער", emoji: "🌲" },
+  { id: "midnight", label: "חצות", emoji: "🌙" },
+  { id: "rose", label: "ורדים", emoji: "🌹" },
+] as const;
+
+export type ThemeName = (typeof THEMES)[number]["id"];
 
 interface ThemeContextType {
   theme: ThemeName;
@@ -17,44 +25,19 @@ const ThemeContext = createContext<ThemeContextType>({
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
   const [theme, setThemeState] = useState<ThemeName>(() => {
-    return (localStorage.getItem("habayit-theme") as ThemeName) || "luxury";
+    return (localStorage.getItem("zhutoton-theme") as ThemeName) || "luxury";
   });
 
-  // Load theme from DB when user logs in
-  useEffect(() => {
-    if (!user) return;
-    const loadTheme = async () => {
-      const { data } = await supabase
-        .from("user_settings")
-        .select("theme")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (data?.theme) {
-        setThemeState(data.theme as ThemeName);
-        localStorage.setItem("habayit-theme", data.theme);
-      }
-    };
-    loadTheme();
-  }, [user]);
-
-  // Apply theme class to root
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove("theme-luxury", "theme-default", "theme-warm");
+    THEMES.forEach((t) => root.classList.remove(`theme-${t.id}`));
     root.classList.add(`theme-${theme}`);
   }, [theme]);
 
-  const setTheme = async (newTheme: ThemeName) => {
+  const setTheme = (newTheme: ThemeName) => {
     setThemeState(newTheme);
-    localStorage.setItem("habayit-theme", newTheme);
-    if (user) {
-      await supabase
-        .from("user_settings")
-        .update({ theme: newTheme })
-        .eq("user_id", user.id);
-    }
+    localStorage.setItem("zhutoton-theme", newTheme);
   };
 
   return (

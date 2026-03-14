@@ -22,3 +22,24 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Binary data files
+זהותון/*.TX*
+זהותון/*.TY*
+זהותון/*.TL*
+זהותון/*.TZ*
+זהותון/*.lnk
+זהותון/*.MAP
+זהותון/*.exe
+זהותון/.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Environment
+.env
