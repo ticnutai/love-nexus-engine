@@ -46,18 +46,7 @@ const AppSidebar = ({ currentView, onNavigate }: AppSidebarProps) => {
         />
       )}
 
-      {/* Backdrop when open and not pinned */}
-      <AnimatePresence>
-        {isOpen && !pinned && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-foreground/5"
-            onClick={() => setHovered(false)}
-          />
-        )}
-      </AnimatePresence>
+      {/* No backdrop - content shifts instead */}
 
       {/* Sidebar */}
       <AnimatePresence>
@@ -152,8 +141,8 @@ const AppSidebar = ({ currentView, onNavigate }: AppSidebarProps) => {
         )}
       </AnimatePresence>
 
-      {/* Push content when pinned */}
-      {pinned && <div className="w-80 flex-shrink-0" />}
+      {/* Push content when sidebar is open (pinned or hovered) */}
+      {isOpen && <div className="w-80 flex-shrink-0 transition-all" />}
     </>
   );
 };
